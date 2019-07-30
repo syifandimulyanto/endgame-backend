@@ -1,0 +1,85 @@
+/* Header */
+.page-header-default {
+  margin-bottom: 20px;
+}
+
+ul.nav > li span.badge {
+  min-width: 20px;
+}
+
+ul.nav > li.active span.badge {
+  background-color: #FFA726;
+  border-color: #FFE800;
+  color: #fff;
+}
+
+/* Sidebar */
+.sidebar-default .navigation > li.active > a,
+.sidebar-default .navigation > li.active > a:hover,
+.sidebar-default .navigation > li.active > a:focus {
+  color: #00897b !important;
+}
+
+/* DataTable */
+.datatable-header {
+  padding-top: 10px;
+}
+
+/* Select2 */
+/*.select2-selection {
+  padding-left: 32px;
+}*/
+
+.input-group > .select2-container + .input-group-btn {
+  padding-left: 16px;
+}
+
+/* Tab */
+.tab-content-bordered .tab-content {
+  border: 0px solid transparent;
+}
+
+/* Styled Radio Inline With Image */
+.radio-inline.image {
+	padding: 0;
+}
+.radio-inline.image > .choice {
+	top: -3px;
+	left: -3px;
+}
+.radio-inline.image > .choice > span {
+	border: 2px solid #dee8ec;
+}
+.radio-inline.image > .choice > span, .radio-inline.image > .choice > span > input {
+	width: 56px;
+	height: 56px;
+}
+.radio-inline.image > .choice.hover > span, .radio-inline.image > .choice > span.checked {
+	border: 2px solid #607D8B;
+}
+.radio-inline.image > img {
+	width: 50px;
+}
+
+.note-toolbar > .note-btn-group {
+  margin-right: 5px;
+}
+
+.has-error .note-editor {
+  border: 1px solid #D84315;
+}
+
+/* Input Light */
+.input-light {
+  border-color: transparent transparent #fff;
+}
+.input-light::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #E6E6E6;
+  opacity: 1; /* Firefox */
+}
+.input-light:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #E6E6E6;
+}
+.input-light::-ms-input-placeholder { /* Microsoft Edge */
+  color: #E6E6E6;
+}
