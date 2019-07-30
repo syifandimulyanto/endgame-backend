@@ -54,4 +54,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
         Route::resource('course', 'CourseController');
 
     });
+
+    // Route User
+    Route::namespace('User')->name('user.')->group(function (){
+        // DataTable
+        Route::get('account/datatable', 'UserAccountController@datatable')->name('account.datatable');
+
+        // User
+        Route::resource('account', 'UserAccountController');
+    });
 });
