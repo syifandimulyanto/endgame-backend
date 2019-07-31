@@ -45,11 +45,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
     Route::namespace('Master')->name('master.')->group(function (){
         // DataTable
         Route::get('room/datatable', 'RoomController@datatable')->name('room.datatable');
+        Route::get('class/datatable', 'ClassController@datatable')->name('class.datatable');
         Route::get('program-study/datatable', 'ProgramStudyController@datatable')->name('program-study.datatable');
         Route::get('course/datatable', 'CourseController@datatable')->name('course.datatable');
 
         // Master
         Route::resource('room', 'RoomController');
+        Route::resource('class', 'ClassController');
         Route::resource('program-study', 'ProgramStudyController');
         Route::resource('course', 'CourseController');
 
@@ -59,8 +61,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
     Route::namespace('User')->name('user.')->group(function (){
         // DataTable
         Route::get('account/datatable', 'UserAccountController@datatable')->name('account.datatable');
+        Route::get('lecture/datatable', 'LectureController@datatable')->name('lecture.datatable');
+        Route::get('student/datatable', 'StudentController@datatable')->name('student.datatable');
 
         // User
         Route::resource('account', 'UserAccountController');
+        Route::resource('lecture', 'LectureController');
+        Route::resource('student', 'StudentController');
     });
 });

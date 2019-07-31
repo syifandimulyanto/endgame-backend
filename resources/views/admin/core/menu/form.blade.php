@@ -11,7 +11,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="panel-title">
-                            <i class="icon-{{ (@$data ? 'pencil' : 'googleplus5') }}"></i> &nbsp; {{ (@$data ? 'Edit' : 'Add New') }} Room
+                            <i class="icon-{{ (@$data ? 'pencil' : 'googleplus5') }}"></i> &nbsp; {{ (@$data ? 'Edit' : 'Add New') }} Menu
                         </h5>
                         <div class="heading-elements">
                             <ul class="icons-list">
@@ -29,7 +29,7 @@
                     <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
                         <label class="control-label col-lg-4">Name <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="name" placeholder="Room Name .." value="{{ @$data ? $data->name : old('name') }}" required>
+                            <input type="text" class="form-control" name="name" placeholder="Menu name .." value="{{ @$data ? $data->name : old('name') }}" required>
                             <div class="form-control-feedback">
                                 <i class="icon-make-group text-muted"></i>
                             </div>

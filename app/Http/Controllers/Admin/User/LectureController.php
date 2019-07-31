@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Master;
+namespace App\Http\Controllers\Admin\User;
 
-use App\Entities\Classes;
+use App\Entities\Lecturer;
 use App\Http\Controllers\Controller;
-use App\Repositories\ClassRepository;
-use App\Validators\ClassValidator;
+use App\Repositories\LectureRepository;
+use App\Validators\LecturerValidator;
 use Illuminate\Http\Request;
 use DataTables;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ClassController extends Controller
+class LectureController extends Controller
 {
     /**
-     * @var ClassRepository
+     * @var LectureRepository
      */
     protected $repository;
 
     /**
-     * @var ClassValidator
+     * @var LecturerValidator
      */
     protected $validator;
 
     /**
-     * ClassController constructor.
+     * LectureController constructor.
      *
-     * @param ClassRepository $repository
-     * @param ClassValidator $validator
+     * @param LectureRepository $repository
+     * @param LecturerValidator $validator
      */
-    public function __construct(ClassRepository $repository, ClassValidator $validator)
+    public function __construct(LectureRepository $repository, LecturerValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -42,7 +42,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return view('admin.master.class.index');
+        return view('admin.user.lecture.index');
     }
 
     /**
@@ -52,7 +52,7 @@ class ClassController extends Controller
      */
     public function create()
     {
-        return view('admin.master.class.form');
+        return view('admin.user.lecture.form');
     }
 
     /**
@@ -75,7 +75,7 @@ class ClassController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.master.class.index')->with('message', $response['message']);
+            return redirect()->route('admin.user.lecture.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -92,7 +92,7 @@ class ClassController extends Controller
      */
     public function show($id)
     {
-        return view('admin.master.class.show');
+        return view('admin.user.lecture.show');
     }
 
     /**
@@ -103,11 +103,11 @@ class ClassController extends Controller
      */
     public function edit($id)
     {
-        $data = Classes::find($id);
+        $data = Lecturer::find($id);
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
-        return view('admin.master.class.form')->with(['data' => $data]);
+        return view('admin.user.lecture.form')->with(['data' => $data]);
     }
 
     /**
@@ -131,7 +131,7 @@ class ClassController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.master.class.index')->with('message', $response['message']);
+            return redirect()->route('admin.user.lecture.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -158,14 +158,14 @@ class ClassController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Classes::all();
+        $models = Lecturer::all();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $formOpen   = '<form action="' . route('admin.master.class.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
+                $formOpen   = '<form action="' . route('admin.user.lecture.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
 
-                $edit   = '<a href="' . route('admin.master.class.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
+                $edit   = '<a href="' . route('admin.user.lecture.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
                 $delete = '<a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete"><i class="icon-cancel-circle2"></i></a>';
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';
@@ -173,7 +173,4 @@ class ClassController extends Controller
             ->rawColumns(['action'])
             ->toJson();
     }
-
 }
-
-?>
