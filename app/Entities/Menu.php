@@ -13,7 +13,7 @@ class Menu extends Model
 
     protected $table = 'menus';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['parent_id', 'name', 'action', 'sort', 'route', 'show_in_menu'];
+    protected $fillable = ['parent_id', 'name', 'icon', 'action', 'sort', 'route', 'show_in_menu'];
 
     public $timestamps = true;
     public $incrementing = false;

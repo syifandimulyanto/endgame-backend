@@ -27,15 +27,32 @@
                                 <tr>
                                     <th width="5px">#</th>
                                     <th class="text-center">Name</th>
-                                    <th class="text-center" width="10px"><i class="icon-arrow-down12"></i></th>
+                                    <th class="text-center">Icon</th>
+                                    <th class="text-center">Route</th>
+                                    <th class="text-center"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($menus as $menu)
                                         <tr>
-                                            <td></td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $menu->name }}</td>
-                                            <td>-</td>
+                                            <td>{{ $menu->icon }}</td>
+                                            <td>{{ $menu->route }}</td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <form action="{{ route('admin.master.class.destroy', $menu->id) }}" method="POST">
+                                                        <input type="hidden" name="_method" value="delete">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                        <a href="{{ route('admin.master.class.edit', $menu->id) }}" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs">
+                                                            <i class="icon-pencil"></i>
+                                                        </a>
+                                                        <a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete">
+                                                            <i class="icon-cancel-circle2"></i>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

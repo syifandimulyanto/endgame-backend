@@ -39,6 +39,19 @@
                         </div>
                     </div>
 
+                    <div class="form-group has-feedback {{ $errors->has('icon') ? 'has-error' : '' }}">
+                        <label class="control-label col-lg-4">Icon</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" name="icon" placeholder="Menu icon .." value="{{ @$data ? $data->icon : old('icon') }}" required>
+                            <div class="form-control-feedback">
+                                <i class="icon-make-group text-muted"></i>
+                            </div>
+                            @if ($errors->has('icon'))
+                                <span class="help-block no-margin mt-5">{!! implode('<br>', $errors->get('icon')) !!}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group has-feedback {{ $errors->has('parent_id') ? 'has-error' : '' }}">
                         <label class="control-label col-lg-4">Parent <small class="text-muted">(sub menu)</small></label>
                         <div class="col-lg-8">

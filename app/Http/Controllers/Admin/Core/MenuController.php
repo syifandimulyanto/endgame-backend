@@ -44,7 +44,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::with(['children'])->whereNull('parent_id')->get();
+//        $menus = Menu::with(['children'])->whereNull('parent_id')->get();
+        $menus = Menu::with(['children'])->get();
         return view('admin.core.menu.index')->with(['menus' => $menus]);
     }
 
