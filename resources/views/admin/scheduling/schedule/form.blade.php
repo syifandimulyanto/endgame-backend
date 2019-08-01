@@ -87,12 +87,13 @@
                     </div>
 
                     <div class="form-group has-feedback {{ $errors->has('period') ? 'has-error' : '' }}">
-                        <label class="control-label col-lg-4">Period <span class="text-danger">*</span></label>
+                        <label class="control-label col-lg-4">Period <span class="text-danger">*</span></label> </label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="period" placeholder="Schedule period .." value="{{ @$data ? $data->period : old('period') }}" required>
-                            <div class="form-control-feedback">
-                                <i class="icon-make-group text-muted"></i>
-                            </div>
+                            <select class="form-control select2" name="period" required>
+                                <option></option>
+                                <option value="1" {{ (@$data && $data->period == 'ganjil') || old('period') == 1 ? 'selected' : '' }}>GANJIL</option>
+                                <option value="2" {{ (@$data && $data->period == 'genap') || old('period') == 2 ? 'selected' : '' }}>GENAP</option>
+                            </select>
                             @if ($errors->has('period'))
                                 <span class="help-block no-margin mt-5">{!! implode('<br>', $errors->get('period')) !!}</span>
                             @endif
@@ -139,12 +140,14 @@
                     </div>
 
                     <div class="form-group has-feedback {{ $errors->has('day') ? 'has-error' : '' }}">
-                        <label class="control-label col-lg-4">Day <span class="text-danger">*</span></label>
+                        <label class="control-label col-lg-4">Day</label>
                         <div class="col-lg-8">
-                            <input type="number" class="form-control" name="day" placeholder="Schedule day .." value="{{ @$data ? $data->day : old('day') }}" required>
-                            <div class="form-control-feedback">
-                                <i class="icon-make-group text-muted"></i>
-                            </div>
+                            <select class="form-control select2" name="day">
+                                <option></option>
+                                @foreach ($days as $key => $day)
+                                    <option value="{{ $key }}" {{ (@$data && $data->day == $key) || old('day') == $key ? 'selected' : '' }}>{{ strtoupper($day)  }}</option>
+                                @endforeach
+                            </select>
                             @if ($errors->has('day'))
                                 <span class="help-block no-margin mt-5">{!! implode('<br>', $errors->get('day')) !!}</span>
                             @endif

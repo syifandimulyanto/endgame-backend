@@ -12,14 +12,14 @@
 */
 
 Route::get('/', function () {
-    // return view('welcome');
+     return view('welcome');
 
     // get the pub-sub manager
-    $pubsub = app('pubsub');
+    // $pubsub = app('pubsub');
 
     // note: function calls on the manager are proxied through to the default connection
     // eg: you can do this on the manager OR a connection
-    $pubsub->publish('sync-training', 'Hallo Fandi');
+    // $pubsub->publish('sync-training', 'Hallo Fandi');
 
 });
 
@@ -71,10 +71,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
     });
 
     // Route Scheduling
-    Route::namespace('Scheduling')->name('scheduling.')->group(function (){
+    Route::namespace('Scheduling')->prefix('schedule')->name('scheduling.')->group(function (){
         Route::get('schedule/datatable', 'ScheduleController@datatable')->name('schedule.datatable');
+        Route::get('student/datatable', 'StudentController@datatable')->name('student.datatable');
 
         // Scheduling
         Route::resource('schedule', 'ScheduleController');
+        Route::resource('student', 'StudentController');
     });
 });

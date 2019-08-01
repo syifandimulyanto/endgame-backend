@@ -83,3 +83,99 @@ ul.nav > li.active span.badge {
 .input-light::-ms-input-placeholder { /* Microsoft Edge */
   color: #E6E6E6;
 }
+
+/*Custom Stiki EndGame*/
+body {
+    color: #737373;
+}
+.bg-teal-600 {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.navbar-inverse .navbar-text {
+    color: #b1c2c8;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #b1c2c8;
+}
+.navbar-inverse .navbar-nav > li > a:hover {
+    color: #b1c2c8;
+}
+
+.sidebar-user-material-content > h6, .sidebar-user-material-content > span {
+    color: #b1c2c8;
+    text-shadow: none;
+}
+
+.sidebar-user-material-menu > a {
+    background-color: #eff6ff;
+    text-shadow: none;
+    color: #5fa1fc;
+    font-weight: bold;
+}
+.sidebar-user-material-menu > a:hover {
+    background-color: #eff6ff;
+}
+
+.sidebar-user-material-menu > a:hover, .sidebar-user-material-menu > a:focus, .sidebar-user-material-menu > a[aria-expanded="true"] {
+    background-color: #eff6ff;
+}
+
+.sidebar-default .navigation li > a, .navigation li a > i {
+    color: #b1c2c8;
+}
+
+.sidebar-default .navigation > li.active > a, .navigation li.active a > i, .sidebar-default .navigation > li.active > a:hover, .sidebar-default .navigation > li.active > a:focus {
+    color: #5fa1fc !important;
+}
+
+.sidebar-default .navigation > li.active > a, .sidebar-default .navigation > li.active > a:hover, .sidebar-default .navigation > li.active > a:focus {
+    background-color: #eff6ff;
+}
+.sidebar-default .navigation > li a:hover {
+    background-color: #eff6ff;
+}
+
+/*.page-header-default {*/
+    /*margin: 30px;*/
+    /*box-shadow:none;*/
+/*}*/
+.content-wrapper {
+    padding: 20px;
+}
+.content {
+    padding: 0;
+}
+
+.bg-teal-400 {
+    background-color: #5fa1fc !important;
+}
+
+.navbar {
+    -webkit-box-shadow: none;
+}
+
+.category-component {
+    padding: 0 20px;
+}
+
+.sidebar-fixed .sidebar-content {
+    top: 30px;
+}
+.text-teal-600, .text-teal-600:hover, .text-teal-600:focus {
+    color: #5fa1fc !important;
+}
+
+.page-header-default {
+    box-shadow:none;
+}
+
+.panel {
+    -webkit-box-shadow:none;
+    box-shadow:none;
+}
+.sidebar-user-material-content > a {
+    box-shadow: none;
+}

@@ -1,0 +1,106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "This is a sample description for current API",
+        "termsOfService": "",
+        "license": {
+            "name": "Private License"
+        },
+        "version": "1.0.0"
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Login endpoint for user",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Email to be validate for login",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "user password to be validate in login",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User data and token"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Get user profile",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User profile"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

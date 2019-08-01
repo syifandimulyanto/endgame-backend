@@ -17,7 +17,7 @@
     <!-- /global stylesheets -->
 
     <!-- Custom CSS -->
-    <link href="{{ asset('assets/admin/css/custom.css?v=1.0.0') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/admin/css/custom.css?v=').date('YmdHis') }}" rel="stylesheet" type="text/css">
 
     <!-- Page CSS files -->
 @yield('style')

@@ -6,11 +6,11 @@
 
     <!-- User menu -->
     <div class="sidebar-user-material">
-      <div class="category-content" style="background:url({{ asset('assets/admin/images/login_cover.jpg') }}) no-repeat right bottom; background-size:440px">
+      <div class="category-content" style="background: #ffffff;">
         <div class="sidebar-user-material-content">
-          <a href="#" class="legitRipple">
-              <img src="{{ asset('assets/admin/images/avatar2.png') }}" class="img-circle img-responsive">
-          </a>
+          {{--<a href="#" class="legitRipple">--}}
+              {{--<img src="{{ asset('assets/admin/images/avatar2.png') }}" class="img-circle img-responsive">--}}
+          {{--</a>--}}
           <h6>{{ Sentinel::getUser()->first_name . ' ' . Sentinel::getUser()->last_name }}</h6>
         </div>
 

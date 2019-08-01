@@ -2,38 +2,36 @@
 
 namespace App\Http\Controllers\Admin\Scheduling;
 
-use App\Entities\Classes;
-use App\Entities\Course;
-use App\Entities\Lecturer;
-use App\Entities\Room;
 use App\Entities\Schedule;
+use App\Entities\Student;
+use App\Entities\StudentSchedule;
 use App\Http\Controllers\Controller;
-use App\Repositories\ScheduleRepository;
-use App\Validators\ScheduleValidator;
+use App\Repositories\SchedulingStudentRepository;
+use App\Validators\SchedulingStudentValidator;
 use Illuminate\Http\Request;
 use DataTables;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ScheduleController extends Controller
+class StudentController extends Controller
 {
     /**
-     * @var ScheduleRepository
+     * @var SchedulingStudentRepository
      */
     protected $repository;
 
     /**
-     * @var ScheduleValidator
+     * @var SchedulingStudentValidator
      */
     protected $validator;
 
     /**
-     * ScheduleController constructor.
+     * StudentController constructor.
      *
-     * @param ScheduleRepository $repository
-     * @param ScheduleValidator $validator
+     * @param SchedulingStudentRepository $repository
+     * @param SchedulingStudentValidator $validator
      */
-    public function __construct(ScheduleRepository $repository, ScheduleValidator $validator)
+    public function __construct(SchedulingStudentRepository $repository, SchedulingStudentValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -46,7 +44,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return view('admin.scheduling.schedule.index');
+        return view('admin.scheduling.student.index');
     }
 
     /**
@@ -56,12 +54,9 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        return view('admin.scheduling.schedule.form')->with([
-            'courses' => Course::all(),
-            'lectures' => Lecturer::with(['user'])->get(),
-            'rooms' => Room::all(),
-            'classes' => Classes::all(),
-            'days' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        return view('admin.scheduling.student.form')->with([
+            'students' => Student::with(['user'])->get(),
+            'schedules' => Schedule::with(['course', 'lecture', 'lecture.user', 'room', 'classes'])->get()
         ]);
     }
 
@@ -85,7 +80,7 @@ class ScheduleController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
+            return redirect()->route('admin.scheduling.student.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -102,7 +97,7 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        return view('admin.scheduling.schedule.show');
+        return view('admin.scheduling.student.show');
     }
 
     /**
@@ -117,13 +112,10 @@ class ScheduleController extends Controller
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
-        return view('admin.scheduling.schedule.form')->with([
+        return view('admin.scheduling.student.form')->with([
             'data' => $data,
-            'courses' => Course::all(),
-            'lectures' => Lecturer::with(['user'])->get(),
-            'rooms' => Room::all(),
-            'classes' => Classes::all(),
-            'days' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            'students' => Student::with(['user'])->get(),
+            'schedules' => Schedule::with(['course', 'lecture', 'lecture.user', 'room', 'classes'])->get()
         ]);
     }
 
@@ -148,7 +140,7 @@ class ScheduleController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
+            return redirect()->route('admin.scheduling.student.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -175,14 +167,14 @@ class ScheduleController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Schedule::with(['lecture', 'lecture.user', 'course', 'classes', 'room'])->get();
+        $models = StudentSchedule::with(['student', 'student.user', 'schedule', 'schedule.course', 'schedule.room', 'schedule.classes', 'schedule.lecture', 'schedule.lecture.user' ])->get();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $formOpen   = '<form action="' . route('admin.scheduling.schedule.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
+                $formOpen   = '<form action="' . route('admin.scheduling.student.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
 
-                $edit   = '<a href="' . route('admin.scheduling.schedule.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
+                $edit   = '<a href="' . route('admin.scheduling.student.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
                 $delete = '<a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete"><i class="icon-cancel-circle2"></i></a>';
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';

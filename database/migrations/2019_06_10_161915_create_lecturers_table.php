@@ -11,7 +11,7 @@ class CreateLecturersTable extends Migration {
 			$table->uuid('id')->primary();
 			$table->string('nidn', 126)->unique();
 			$table->string('nip', 126)->unique();
-			$table->text('address');
+			$table->text('address')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
