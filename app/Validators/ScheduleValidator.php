@@ -6,11 +6,11 @@ use \Prettus\Validator\Contracts\ValidatorInterface;
 use \Prettus\Validator\LaravelValidator;
 
 /**
- * Class CourseValidator.
+ * Class ScheduleValidator.
  *
  * @package namespace App\Validators;
  */
-class LecturerValidator extends LaravelValidator
+class ScheduleValidator extends LaravelValidator
 {
     /**
      * Validation Rules
@@ -19,10 +19,10 @@ class LecturerValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'nip' => 'required'
+            'course_id' => 'required'
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'nip' => 'required'
+            'course_id' => 'required'
         ],
     ];
 }

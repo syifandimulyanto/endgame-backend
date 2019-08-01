@@ -2,8 +2,8 @@
 
 @section('content')
     @include('admin.layouts.partials.header', [
-      'title' => 'Room',
-      'breadcrumbs' => ['Room']
+      'title' => 'Schedule',
+      'breadcrumbs' => ['Schedule']
     ])
     <div class="content">
         <div class="row">
@@ -12,10 +12,10 @@
                 <div class="panel panel-flat">
                     <div class="panel-heading">
                         <h6 class="panel-title">
-                            Room
+                            Schedule
                         </h6>
                         <div class="heading-elements">
-                            <a href="{{ route('admin.core.menu.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
+                            <a href="{{ route('admin.scheduling.schedule.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
                                 <b><i class="icon-googleplus5"></i></b> <span class="ladda-label">Add New</span>
                             </a>
                         </div>
@@ -26,36 +26,16 @@
                                 <thead>
                                 <tr>
                                     <th width="5px">#</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">Icon</th>
-                                    <th class="text-center">Route</th>
+                                    <th>Course</th>
+                                    <th>Lecture</th>
+                                    <th>Room</th>
+                                    <th>Class</th>
+                                    <th>Period</th>
+                                    <th>Period Year</th>
                                     <th class="text-center"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($menus as $menu)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $menu->name }}</td>
-                                            <td>{{ $menu->icon }}</td>
-                                            <td>{{ $menu->route }}</td>
-                                            <td>
-                                                <div class="text-center">
-                                                    <form action="{{ route('admin.core.menu.destroy', $menu->id) }}" method="POST">
-                                                        <input type="hidden" name="_method" value="delete">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <a href="{{ route('admin.core.menu.edit', $menu->id) }}" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs">
-                                                            <i class="icon-pencil"></i>
-                                                        </a>
-                                                        <a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete">
-                                                            <i class="icon-cancel-circle2"></i>
-                                                        </a>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -79,7 +59,20 @@
             }, 10000);
 
             /* DataTable */
-            $('.datatable').DataTable();
+            $('.datatable').DataTable({
+                ajax: '{{ route('admin.scheduling.schedule.datatable') }}',
+                serverSide: true,
+                columns: [
+                    { data: 'DT_RowIndex' },
+                    { data: 'course.name' },
+                    { data: 'lecture.user.first_name' },
+                    { data: 'room.name' },
+                    { data: 'classes.name' },
+                    { data: 'period' },
+                    { data: 'period_year' },
+                    { data: 'action', className: 'text-nowrap', orderable: false }
+                ]
+            });
             // Enable Select2 select for the length option
             $('.dataTables_length select').select2({
                 minimumResultsForSearch: Infinity,

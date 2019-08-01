@@ -11,8 +11,8 @@ class CreateStudentsTable extends Migration {
 			$table->uuid('id')->primary();
 			$table->uuid('program_study_id');
 			$table->integer('nrp');
-			$table->date('birth_date');
-			$table->string('birth_place', 126);
+			$table->date('birth_date')->nullable();
+			$table->string('birth_place', 126)->nullable();
 			$table->enum('gender', array('male', 'female'));
 			$table->string('religion', 64);
 			$table->timestamps();

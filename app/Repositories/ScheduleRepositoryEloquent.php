@@ -2,23 +2,23 @@
 
 namespace App\Repositories;
 
-use App\Entities\Student;
-use App\Validators\StudentValidator;
+use App\Entities\Schedule;
+use App\Validators\ScheduleValidator;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Traits\CacheableRepository;
 
 /**
- * Class StudentRepositoryEloquent.
+ * Class ScheduleRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class StudentRepositoryEloquent extends BaseRepository implements StudentRepository
+class ScheduleRepositoryEloquent extends BaseRepository implements ScheduleRepository
 {
     use CacheableRepository;
 
     protected $fieldSearchable = [
-        'name' => 'like'
+        'room_id' => 'like'
     ];
 
     /**
@@ -28,7 +28,7 @@ class StudentRepositoryEloquent extends BaseRepository implements StudentReposit
      */
     public function model()
     {
-        return Student::class;
+        return Schedule::class;
     }
 
     /**
@@ -38,7 +38,7 @@ class StudentRepositoryEloquent extends BaseRepository implements StudentReposit
      */
     public function validator()
     {
-        return StudentValidator::class;
+        return ScheduleValidator::class;
     }
 
     /**

@@ -69,4 +69,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
         Route::resource('lecture', 'LectureController');
         Route::resource('student', 'StudentController');
     });
+
+    // Route Scheduling
+    Route::namespace('Scheduling')->name('scheduling.')->group(function (){
+        Route::get('schedule/datatable', 'ScheduleController@datatable')->name('schedule.datatable');
+
+        // Scheduling
+        Route::resource('schedule', 'ScheduleController');
+    });
 });

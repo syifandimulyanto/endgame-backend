@@ -2,37 +2,40 @@
 
 namespace App\Entities;
 
+use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Schedule extends Model 
 {
 
-    protected $table = 'schedules';
-    public $timestamps = true;
-
     use SoftDeletes;
+    use Uuids;
 
+    protected $table = 'schedules';
     protected $dates = ['deleted_at'];
+    protected $fillable = ['course_id', 'lecture_id', 'room_id', 'class_id', 'period', 'period_year', 'start_date', 'end_date', 'day', 'start_time', 'end_time'];
+    public $timestamps = true;
+    public $incrementing = false;
 
-    public function hasLecture()
+    public function lecture()
     {
-        return $this->belongsTo('Lecturer');
+        return $this->belongsTo('App\Entities\Lecturer');
     }
 
-    public function hasCourse()
+    public function course()
     {
-        return $this->belongsTo('Course');
+        return $this->belongsTo('App\Entities\Course');
     }
 
-    public function hasClass()
+    public function classes()
     {
-        return $this->belongsTo('Class');
+        return $this->belongsTo('App\Entities\Classes', 'class_id');
     }
 
-    public function hasRoom()
+    public function room()
     {
-        return $this->belongsTo('Room');
+        return $this->belongsTo('App\Entities\Room');
     }
 
 }

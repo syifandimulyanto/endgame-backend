@@ -29,7 +29,7 @@
                     <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
                         <label class="control-label col-lg-4">Email <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="email" placeholder="Lecture email .." value="{{ @$data ? $data->email : old('email') }}" required>
+                            <input type="text" class="form-control" name="email" placeholder="Lecture email .." value="{{ @$data ? $data->user->email : old('email') }}" required>
                             <div class="form-control-feedback">
                                 <i class="icon-make-group text-muted"></i>
                             </div>
@@ -42,7 +42,7 @@
                     <div class="form-group has-feedback {{ $errors->has('first_name') ? 'has-error' : '' }}">
                         <label class="control-label col-lg-4">First Name <span class="text-danger">*</span></label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="first_name" placeholder="Lecture first name .." value="{{ @$data ? $data->first_name : old('first_name') }}" required>
+                            <input type="text" class="form-control" name="first_name" placeholder="Lecture first name .." value="{{ @$data ? $data->user->first_name : old('first_name') }}" required>
                             <div class="form-control-feedback">
                                 <i class="icon-make-group text-muted"></i>
                             </div>
@@ -55,7 +55,7 @@
                     <div class="form-group has-feedback {{ $errors->has('last_name') ? 'has-error' : '' }}">
                         <label class="control-label col-lg-4">Last Name</label>
                         <div class="col-lg-8">
-                            <input type="text" class="form-control" name="last_name" placeholder="Lecture last name .." value="{{ @$data ? $data->last_name : old('last_name') }}">
+                            <input type="text" class="form-control" name="last_name" placeholder="Lecture last name .." value="{{ @$data ? $data->user->last_name : old('last_name') }}">
                             <div class="form-control-feedback">
                                 <i class="icon-make-group text-muted"></i>
                             </div>

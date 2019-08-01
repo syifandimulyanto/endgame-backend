@@ -51,6 +51,8 @@ class User extends Authenticatable
         'permissions',
         'last_login',
         'password',
+        'parent_type',
+        'parent_id'
     ];
 
     public function roles()

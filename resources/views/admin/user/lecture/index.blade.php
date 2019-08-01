@@ -26,9 +26,11 @@
                                 <thead>
                                 <tr>
                                     <th width="5px">#</th>
-                                    <th class="text-center">First Name</th>
-                                    <th class="text-center">Last Name</th>
-                                    <th class="text-center">Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>NIDN</th>
+                                    <th>NIP</th>
                                     <th class="text-center" width="10px"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
@@ -61,9 +63,11 @@
                 serverSide: true,
                 columns: [
                     { data: 'DT_RowIndex' },
-                    { data: 'first_name', className: 'text-center' },
-                    { data: 'last_name', className: 'text-center' },
-                    { data: 'email', className: 'text-center' },
+                    { data: 'user.first_name' },
+                    { data: 'user.last_name' },
+                    { data: 'user.email' },
+                    { data: 'nidn' },
+                    { data: 'nip' },
                     { data: 'action', className: 'text-nowrap', orderable: false }
                 ]
             });

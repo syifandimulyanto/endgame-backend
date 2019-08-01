@@ -1,44 +1,42 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User;
+namespace App\Http\Controllers\Admin\Scheduling;
 
-use App\Entities\ProgramStudy;
-use App\Entities\Student;
+use App\Entities\Classes;
+use App\Entities\Course;
+use App\Entities\Lecturer;
+use App\Entities\Room;
+use App\Entities\Schedule;
 use App\Http\Controllers\Controller;
-use App\Repositories\AccountUserRepository;
-use App\Repositories\StudentRepository;
-use App\Validators\AccountUserValidator;
-use App\Validators\StudentValidator;
+use App\Repositories\ScheduleRepository;
+use App\Validators\ScheduleValidator;
 use Illuminate\Http\Request;
 use DataTables;
-use Illuminate\Support\Facades\Hash;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class StudentController extends Controller
+class ScheduleController extends Controller
 {
+    /**
+     * @var ScheduleRepository
+     */
     protected $repository;
-    protected $userRepository;
-    protected $validator;
-    protected $userValidator;
 
     /**
-     * StudentController constructor.
-     *
-     * @param StudentRepository $repository
-     * @param StudentValidator $validator
+     * @var ScheduleValidator
      */
-    public function __construct(
-            StudentRepository $repository,
-            StudentValidator $validator,
-            AccountUserRepository $userRepository,
-            AccountUserValidator $userValidator
-        )
+    protected $validator;
+
+    /**
+     * ScheduleController constructor.
+     *
+     * @param ScheduleRepository $repository
+     * @param ScheduleValidator $validator
+     */
+    public function __construct(ScheduleRepository $repository, ScheduleValidator $validator)
     {
-        $this->repository       = $repository;
-        $this->userRepository   = $userRepository;
-        $this->validator        = $validator;
-        $this->userValidator    = $userValidator;
+        $this->repository = $repository;
+        $this->validator  = $validator;
     }
 
     /**
@@ -48,7 +46,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('admin.user.student.index');
+        return view('admin.scheduling.schedule.index');
     }
 
     /**
@@ -58,9 +56,11 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('admin.user.student.form')->with([
-            'programStudies' => ProgramStudy::all(),
-            'religions' => ['islam', 'kristen protestan', 'hindu', 'budha', 'katolik', 'khong hu cu']
+        return view('admin.scheduling.schedule.form')->with([
+            'courses' => Course::all(),
+            'lectures' => Lecturer::with(['user'])->get(),
+            'rooms' => Room::all(),
+            'classes' => Classes::all()
         ]);
     }
 
@@ -72,27 +72,9 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         try {
-            $defaultPassword = 'stiki-2019';
-            $request->request->add(
-                [
-                    'password' => Hash::make($defaultPassword),
-                    'parent_type' => 'student'
-                ]
-            );
-            // user data
-            $this->userValidator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $userModel = $this->userRepository->create($request->all());
-
-            if (!$userModel)
-                throw new \Exception('Cant save user data.');
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $model = $this->repository->create($request->all());
-
-            // update user data
-            $request->request->add(['parent_id' => $model->id]);
-            if ($model)
-                $this->userRepository->update($request->all(), $userModel->id);
 
             $response = [
                 'message' => 'Data created.',
@@ -102,7 +84,7 @@ class StudentController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.user.student.index')->with('message', $response['message']);
+            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -119,7 +101,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        return view('admin.user.student.show');
+        return view('admin.scheduling.schedule.show');
     }
 
     /**
@@ -130,14 +112,16 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $data = $this->repository->with(['user'])->find($id);
+        $data = $this->repository->find($id);
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
-        return view('admin.user.student.form')->with([
+        return view('admin.scheduling.schedule.form')->with([
             'data' => $data,
-            'programStudies' => ProgramStudy::all(),
-            'religions' => ['islam', 'kristen protestan', 'hindu', 'budha', 'katolik', 'khong hu cu']
+            'courses' => Course::all(),
+            'lectures' => Lecturer::with(['user'])->get(),
+            'rooms' => Room::all(),
+            'classes' => Classes::all()
         ]);
     }
 
@@ -151,13 +135,6 @@ class StudentController extends Controller
     {
         try {
 
-            $student = $this->repository->with(['user'])->find($id);
-            if (!$student) throw new \Exception('Data not found');
-
-            // user update
-            $this->userValidator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-            $userModel = $this->userRepository->update($request->all(), $student->user->id);
-
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
             $model = $this->repository->update($request->all(), $id);
 
@@ -169,7 +146,7 @@ class StudentController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.user.student.index')->with('message', $response['message']);
+            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -196,14 +173,14 @@ class StudentController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Student::with(['user'])->get();
+        $models = Schedule::with(['lecture', 'lecture.user', 'course', 'classes', 'room'])->get();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $formOpen   = '<form action="' . route('admin.user.student.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
+                $formOpen   = '<form action="' . route('admin.scheduling.schedule.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
 
-                $edit   = '<a href="' . route('admin.user.student.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
+                $edit   = '<a href="' . route('admin.scheduling.schedule.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
                 $delete = '<a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete"><i class="icon-cancel-circle2"></i></a>';
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';
@@ -211,4 +188,7 @@ class StudentController extends Controller
             ->rawColumns(['action'])
             ->toJson();
     }
+
 }
+
+?>

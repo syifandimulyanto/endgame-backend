@@ -14,7 +14,7 @@ class CreateSchedulesTable extends Migration {
 			$table->uuid('room_id');
 			$table->uuid('class_id');
 			$table->enum('period', array('ganjil', 'genap'));
-			$table->date('period_year');
+			$table->integer('period_year');
 			$table->date('start_date');
 			$table->date('end_date');
 			$table->integer('day');

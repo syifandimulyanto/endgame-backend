@@ -4,24 +4,22 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Entities\Lecturer;
 use App\Http\Controllers\Controller;
+use App\Repositories\AccountUserRepository;
 use App\Repositories\LectureRepository;
+use App\Validators\AccountUserValidator;
 use App\Validators\LecturerValidator;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Hash;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class LectureController extends Controller
 {
-    /**
-     * @var LectureRepository
-     */
     protected $repository;
-
-    /**
-     * @var LecturerValidator
-     */
+    protected $userRepository;
     protected $validator;
+    protected $userValidator;
 
     /**
      * LectureController constructor.
@@ -29,10 +27,17 @@ class LectureController extends Controller
      * @param LectureRepository $repository
      * @param LecturerValidator $validator
      */
-    public function __construct(LectureRepository $repository, LecturerValidator $validator)
+    public function __construct(
+            LectureRepository $repository,
+            LecturerValidator $validator,
+            AccountUserRepository $userRepository,
+            AccountUserValidator $userValidator
+        )
     {
-        $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->repository       = $repository;
+        $this->userRepository   = $userRepository;
+        $this->validator        = $validator;
+        $this->userValidator    = $userValidator;
     }
 
     /**
@@ -63,9 +68,27 @@ class LectureController extends Controller
     public function store(Request $request)
     {
         try {
+            $defaultPassword = 'stiki-2019';
+            $request->request->add(
+                [
+                    'password' => Hash::make($defaultPassword),
+                    'parent_type' => 'lecture'
+                ]
+            );
+            // user data
+            $this->userValidator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $userModel = $this->userRepository->create($request->all());
+
+            if (!$userModel)
+                throw new \Exception('Cant save user data.');
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $model = $this->repository->create($request->all());
+
+            // update user data
+            $request->request->add(['parent_id' => $model->id]);
+            if ($model)
+                $this->userRepository->update($request->all(), $userModel->id);
 
             $response = [
                 'message' => 'Data created.',
@@ -103,7 +126,7 @@ class LectureController extends Controller
      */
     public function edit($id)
     {
-        $data = Lecturer::find($id);
+        $data = $this->repository->with(['user'])->find($id);
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
@@ -158,7 +181,7 @@ class LectureController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Lecturer::all();
+        $models = Lecturer::with(['user'])->get();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

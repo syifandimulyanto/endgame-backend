@@ -19,10 +19,10 @@ class StudentValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-            'name' => 'required'
+            'nrp' => 'required'
         ],
         ValidatorInterface::RULE_UPDATE => [
-            'name' => 'required'
+            'nrp' => 'required'
         ],
     ];
 }
