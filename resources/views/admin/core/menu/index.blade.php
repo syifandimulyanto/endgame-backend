@@ -2,8 +2,8 @@
 
 @section('content')
     @include('admin.layouts.partials.header', [
-      'title' => 'Room',
-      'breadcrumbs' => ['Room']
+      'title' => 'Menu',
+      'breadcrumbs' => ['Menu']
     ])
     <div class="content">
         <div class="row">
@@ -12,7 +12,7 @@
                 <div class="panel panel-flat">
                     <div class="panel-heading">
                         <h6 class="panel-title">
-                            Room
+                            Menu
                         </h6>
                         <div class="heading-elements">
                             <a href="{{ route('admin.core.menu.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">

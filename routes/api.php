@@ -21,5 +21,8 @@ Route::namespace('API')->group(function () {
     Route::middleware('auth.api')->group(function (){
         // user data ..
         Route::get('profile', 'APIAuthController@profile');
+
+        // schedule
+        Route::resource('schedule', 'APIScheduleController');
     });
 });

@@ -3,12 +3,13 @@
 namespace App\Libraries;
 
 use App\Entities\Menu;
+use Route;
 
 class MenuLib
 {
-    public static function init()
+    static function init()
     {
-        $menu = Menu::with(['children'])->whereNull('parent_id')->get();
+        $menu = Menu::with(['children'])->whereNull('parent_id')->orderBy('sort', 'ASC')->get();
         $html = MenuLib::renderMenu($menu, '');
         return $html;
     }
@@ -16,7 +17,7 @@ class MenuLib
     static function renderMenu($menus, $html, $child = false)
     {
         foreach ($menus as $menu) {
-            $html .= '<li>';
+            $html .= '<li class="'.(Route::currentRouteName() == $menu->route ? 'active' : '').'">';
                 $html .= '<a href="'.(!empty($menu->route) ? route($menu->route) : "#") .'">';
                     if (!empty($menu->icon)) $html .= '<i class="' . $menu->icon . '"></i>';
                     $html .= '<span>' . $menu->name . '</span>';
@@ -33,6 +34,4 @@ class MenuLib
 
         return $html;
     }
-
-
 }

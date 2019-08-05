@@ -158,7 +158,7 @@ class UserAccountController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = User::all();
+        $models = User::whereNull('parent_id')->get();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {

@@ -86,7 +86,8 @@ ul.nav > li.active span.badge {
 
 /*Custom Stiki EndGame*/
 body {
-    color: #737373;
+    color: #173D76;
+    background-color: #F7F9FD;
 }
 .bg-teal-600 {
     background-color: #ffffff;
@@ -94,25 +95,25 @@ body {
 }
 
 .navbar-inverse .navbar-text {
-    color: #b1c2c8;
+    color: #5C5959;
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: #b1c2c8;
+    color: #5C5959;
 }
 .navbar-inverse .navbar-nav > li > a:hover {
-    color: #b1c2c8;
+    color: #5C5959;
 }
 
 .sidebar-user-material-content > h6, .sidebar-user-material-content > span {
-    color: #b1c2c8;
+    color: #5C5959;
     text-shadow: none;
 }
 
 .sidebar-user-material-menu > a {
     background-color: #eff6ff;
     text-shadow: none;
-    color: #5fa1fc;
+    color: #173D76;
     font-weight: bold;
 }
 .sidebar-user-material-menu > a:hover {
@@ -124,11 +125,11 @@ body {
 }
 
 .sidebar-default .navigation li > a, .navigation li a > i {
-    color: #b1c2c8;
+    color: #5C5959;
 }
 
 .sidebar-default .navigation > li.active > a, .navigation li.active a > i, .sidebar-default .navigation > li.active > a:hover, .sidebar-default .navigation > li.active > a:focus {
-    color: #5fa1fc !important;
+    color: #173D76 !important;
 }
 
 .sidebar-default .navigation > li.active > a, .sidebar-default .navigation > li.active > a:hover, .sidebar-default .navigation > li.active > a:focus {
@@ -175,7 +176,75 @@ body {
 .panel {
     -webkit-box-shadow:none;
     box-shadow:none;
+    border: 1px solid #d6eaff;
+    border-radius: .2855rem;
 }
 .sidebar-user-material-content > a {
     box-shadow: none;
+}
+
+.sidebar {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.navbar-nav {
+    margin: auto;
+}
+
+.field-style {
+    width: 100%;
+    height: 2.284rem;
+    border-radius: .2855rem;
+    font-family: "Ubuntu",serif;
+    padding: 1.142rem;
+    font-size: 1em;
+    font-weight: 400;
+    border: 1px solid #a3cfff;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+}
+
+.select2-container--focus .select2-selection--single:not([class*=bg-]):not([class*=border-]), .select2-container--open .select2-selection--single:not([class*=bg-]):not([class*=border-]) {
+    border-bottom-color: #5fa1fc;
+    -webkit-box-shadow: 0 1px 0 #5fa1fc;
+    box-shadow: 0 1px 0 #5fa1fc;
+}
+
+.form-control:focus {
+    outline: 0;
+    border-color: transparent;
+    border-bottom-color: #5fa1fc;
+    -webkit-box-shadow: 0 1px 0 #5fa1fc;
+    box-shadow: 0 1px 0 #5fa1fc;
+}
+
+.select2-results__option[aria-selected=true] {
+    background-color: #5fa1fc;
+}
+
+.panel-default > .panel-heading {
+    color: #173D76;
+}
+
+.page-header-default .page-header-content + .breadcrumb-line, .page-header-inverse .page-header-content + .breadcrumb-line {
+    border-top: 1px solid #d6eaff;
+}
+
+.breadcrumb > li > a {
+    color: #173D76;
+}
+
+.table-hover > tbody > tr:hover {
+    background: #fbfcff;
+    -webkit-box-shadow: inset 0px 0px 1px 0px #a6c3e2, 0px 4px 7px 0px rgba(206,226,249,0.431);
+    box-shadow: inset 0px 0px 1px 0px #a6c3e2, 0px 4px 7px 0px rgba(206,226,249,0.431);
+}
+
+.panel thead {
+    color: #173D76;
+}
+
+.panel .panel-title {
+    color: #173D76;
 }

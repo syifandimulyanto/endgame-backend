@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('content')
     @include('admin.layouts.partials.header', [
-      'title' => (@$data ? 'Edit' : 'Add New') . ' Room',
-      'breadcrumbs' => ['User', ['Account', route('admin.user.account.index')], (@$data ? 'Edit' : 'Add New') . ' Account']
+      'title' => (@$data ? 'Edit' : 'Add New') . ' Account',
+      'breadcrumbs' => [ ['Account', route('admin.user.account.index')], (@$data ? 'Edit' : 'Add New') . ' Account']
     ])
     <div class="content">
         <div class="row">

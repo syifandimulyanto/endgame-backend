@@ -28,6 +28,8 @@
                                     <th width="5px">#</th>
                                     <th class="text-center">Code</th>
                                     <th class="text-center">Name</th>
+                                    <th class="text-center">Created at</th>
+                                    <th class="text-center">Updated at</th>
                                     <th class="text-center" width="10px"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
@@ -62,6 +64,8 @@
                     { data: 'DT_RowIndex' },
                     { data: 'code', className: 'text-center' },
                     { data: 'name', className: 'text-center' },
+                    { data: 'created_at', className: 'text-center' },
+                    { data: 'updated_at', className: 'text-center' },
                     { data: 'action', className: 'text-nowrap', orderable: false }
                 ]
             });

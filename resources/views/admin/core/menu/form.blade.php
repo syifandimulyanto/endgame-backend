@@ -2,7 +2,7 @@
 @section('content')
     @include('admin.layouts.partials.header', [
       'title' => (@$data ? 'Edit' : 'Add New') . ' Menu',
-      'breadcrumbs' => ['Core', ['Menu', route('admin.core.menu.index')], (@$data ? 'Edit' : 'Add New') . ' Menu']
+      'breadcrumbs' => [['Menu', route('admin.core.menu.index')], (@$data ? 'Edit' : 'Add New') . ' Menu']
     ])
     <div class="content">
         <div class="row">

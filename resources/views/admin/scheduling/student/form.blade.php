@@ -2,7 +2,7 @@
 @section('content')
     @include('admin.layouts.partials.header', [
       'title' => (@$data ? 'Edit' : 'Add New') . ' Schedule Student',
-      'breadcrumbs' => ['User', ['Schedule', route('admin.scheduling.student.index')], (@$data ? 'Edit' : 'Add New') . ' Schedule Student']
+      'breadcrumbs' => [ ['Schedule', route('admin.scheduling.student.index')], (@$data ? 'Edit' : 'Add New') . ' Schedule Student']
     ])
     <div class="content">
         <div class="row">

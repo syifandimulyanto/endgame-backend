@@ -18,7 +18,6 @@
           <i class="icon-alarm text-teal-600"></i>
           <span class="text-muted time-timer">{{ $now->format('H:i:s') }}</span>
         </a>
-        {{-- <a href="#" class="btn btn-link btn-float text-size-small has-text"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a> --}}
       </div>
     </div>
 
