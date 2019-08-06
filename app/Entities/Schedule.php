@@ -18,6 +18,11 @@ class Schedule extends Model
     public $timestamps = true;
     public $incrementing = false;
 
+    public function studentSchedule()
+    {
+        return $this->hasMany('App\Entities\StudentSchedule', 'schedule_id');
+    }
+
     public function lecture()
     {
         return $this->belongsTo('App\Entities\Lecturer');

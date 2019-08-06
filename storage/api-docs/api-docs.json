@@ -15,6 +15,80 @@
         "https"
     ],
     "paths": {
+        "/notification": {
+            "get": {
+                "tags": [
+                    "notification"
+                ],
+                "summary": "Get all notification",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification data"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
+        "/scheduleChange": {
+            "get": {
+                "tags": [
+                    "schedule - change"
+                ],
+                "summary": "Get user schedule change",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule change data"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
         "/schedule": {
             "get": {
                 "tags": [
@@ -131,6 +205,90 @@
                 "responses": {
                     "200": {
                         "description": "User profile"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
+        "/attend": {
+            "get": {
+                "tags": [
+                    "schedule - attend"
+                ],
+                "summary": "Get user schedule attend",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule attend data"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "schedule - attend"
+                ],
+                "summary": "Schedule attend",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nrp",
+                        "in": "formData",
+                        "description": "Student nrp",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "datetime",
+                        "in": "formData",
+                        "description": "Schedule date time",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Schedule data"
                     },
                     "500": {
                         "description": "Error Message"

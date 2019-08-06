@@ -1,39 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Scheduling;
+namespace App\Http\Controllers\Admin\Master;
 
-use App\Entities\Classes;
-use App\Entities\Course;
-use App\Entities\Lecturer;
-use App\Entities\Room;
-use App\Entities\Schedule;
+use App\Entities\Notification;
 use App\Http\Controllers\Controller;
-use App\Repositories\ScheduleRepository;
-use App\Validators\ScheduleValidator;
+use App\Repositories\NotificationRepository;
+use App\Validators\NotificationValidator;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Str;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ScheduleController extends Controller
+class NotificationController extends Controller
 {
     /**
-     * @var ScheduleRepository
+     * @var NotificationRepository
      */
     protected $repository;
 
     /**
-     * @var ScheduleValidator
+     * @var NotificationValidator
      */
     protected $validator;
 
     /**
-     * ScheduleController constructor.
+     * NotificationController constructor.
      *
-     * @param ScheduleRepository $repository
-     * @param ScheduleValidator $validator
+     * @param NotificationRepository $repository
+     * @param NotificationValidator $validator
      */
-    public function __construct(ScheduleRepository $repository, ScheduleValidator $validator)
+    public function __construct(NotificationRepository $repository, NotificationValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -46,7 +43,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        return view('admin.scheduling.schedule.index');
+        return view('admin.master.notification.index');
     }
 
     /**
@@ -56,13 +53,7 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        return view('admin.scheduling.schedule.form')->with([
-            'courses' => Course::all(),
-            'lectures' => Lecturer::with(['user'])->get(),
-            'rooms' => Room::all(),
-            'classes' => Classes::all(),
-            'days' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        ]);
+        return view('admin.master.notification.form');
     }
 
     /**
@@ -74,6 +65,12 @@ class ScheduleController extends Controller
     {
         try {
 
+            $request->request->add(
+                [
+                    'slug' => Str::slug($request->title),
+                    'type' => Notification::BLAST
+                ]
+            );
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $model = $this->repository->create($request->all());
 
@@ -85,7 +82,7 @@ class ScheduleController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
+            return redirect()->route('admin.master.notification.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -102,7 +99,7 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        return view('admin.scheduling.schedule.show');
+        return view('admin.master.notification.show');
     }
 
     /**
@@ -117,14 +114,7 @@ class ScheduleController extends Controller
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
-        return view('admin.scheduling.schedule.form')->with([
-            'data' => $data,
-            'courses' => Course::all(),
-            'lectures' => Lecturer::with(['user'])->get(),
-            'rooms' => Room::all(),
-            'classes' => Classes::all(),
-            'days' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        ]);
+        return view('admin.master.notification.form')->with(['data' => $data]);
     }
 
     /**
@@ -148,7 +138,7 @@ class ScheduleController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.scheduling.schedule.index')->with('message', $response['message']);
+            return redirect()->route('admin.master.notification.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -175,25 +165,19 @@ class ScheduleController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Schedule::with(['lecture', 'lecture.user', 'course', 'classes', 'room'])->get();
+        $models = Notification::all();
         return DataTables::of($models)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $formOpen   = '<form action="' . route('admin.scheduling.schedule.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
+                $formOpen   = '<form action="' . route('admin.master.notification.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
 
-                $edit   = '<a href="' . route('admin.scheduling.schedule.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
+                $edit   = '<a href="' . route('admin.master.notification.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
                 $delete = '<a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete"><i class="icon-cancel-circle2"></i></a>';
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';
             })
-            ->addColumn('date_start_end', function ($row) {
-                return '<div class="text-center">' . $row->start_date . ' - '. $row->end_date  . '</div>';
-            })
-            ->addColumn('time_start_end', function ($row) {
-                return '<div class="text-center">' . $row->start_time . ' - '. $row->end_time  . '</div>';
-            })
-            ->rawColumns(['action', 'date_start_end', 'time_start_end'])
+            ->rawColumns(['action'])
             ->toJson();
     }
 

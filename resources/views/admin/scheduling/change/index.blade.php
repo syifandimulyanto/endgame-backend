@@ -2,8 +2,8 @@
 
 @section('content')
     @include('admin.layouts.partials.header', [
-      'title' => 'Schedule',
-      'breadcrumbs' => ['Schedule']
+      'title' => 'Schedule Change',
+      'breadcrumbs' => ['Schedule Change']
     ])
     <div class="content">
         <div class="row">
@@ -15,7 +15,7 @@
                             Schedule
                         </h6>
                         <div class="heading-elements">
-                            <a href="{{ route('admin.scheduling.schedule.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
+                            <a href="{{ route('admin.scheduling.change.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
                                 <b><i class="icon-googleplus5"></i></b> <span class="ladda-label">Add New</span>
                             </a>
                         </div>
@@ -30,10 +30,9 @@
                                     <th>Lecture</th>
                                     <th>Room</th>
                                     <th>Class</th>
-                                    <th>Period</th>
-                                    <th>Period Year</th>
                                     <th>Date</th>
-                                    <th>Time</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
                                     <th class="text-center"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
@@ -62,18 +61,17 @@
 
             /* DataTable */
             $('.datatable').DataTable({
-                ajax: '{{ route('admin.scheduling.schedule.datatable') }}',
+                ajax: '{{ route('admin.scheduling.change.datatable') }}',
                 serverSide: true,
                 columns: [
                     { data: 'DT_RowIndex' },
-                    { data: 'course.name' },
-                    { data: 'lecture.user.first_name' },
+                    { data: 'schedule.course.name' },
+                    { data: 'schedule.lecture.user.first_name' },
                     { data: 'room.name' },
-                    { data: 'classes.name' },
-                    { data: 'period' },
-                    { data: 'period_year' },
-                    { data: 'date_start_end'},
-                    { data: 'time_start_end'},
+                    { data: 'schedule.classes.name' },
+                    { data: 'date' },
+                    { data: 'start_time' },
+                    { data: 'end_time' },
                     { data: 'action', className: 'text-nowrap', orderable: false }
                 ]
             });

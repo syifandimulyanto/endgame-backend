@@ -2,8 +2,8 @@
 
 @section('content')
     @include('admin.layouts.partials.header', [
-      'title' => 'Schedule',
-      'breadcrumbs' => ['Schedule']
+      'title' => 'Notification',
+      'breadcrumbs' => ['Notification']
     ])
     <div class="content">
         <div class="row">
@@ -12,10 +12,10 @@
                 <div class="panel panel-flat">
                     <div class="panel-heading">
                         <h6 class="panel-title">
-                            Schedule
+                            Notification
                         </h6>
                         <div class="heading-elements">
-                            <a href="{{ route('admin.scheduling.schedule.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
+                            <a href="{{ route('admin.master.notification.create') }}" class="btn btn-xs bg-teal-400 btn-labeled btn-ladda btn-ladda-spinner" data-style="slide-right">
                                 <b><i class="icon-googleplus5"></i></b> <span class="ladda-label">Add New</span>
                             </a>
                         </div>
@@ -26,15 +26,11 @@
                                 <thead>
                                 <tr>
                                     <th width="5px">#</th>
-                                    <th>Course</th>
-                                    <th>Lecture</th>
-                                    <th>Room</th>
-                                    <th>Class</th>
-                                    <th>Period</th>
-                                    <th>Period Year</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th class="text-center"><i class="icon-arrow-down12"></i></th>
+                                    <th class="text-center">Title</th>
+                                    <th class="text-center">Slug</th>
+                                    <th class="text-center">Created at</th>
+                                    <th class="text-center">Updated at</th>
+                                    <th class="text-center" width="10px"><i class="icon-arrow-down12"></i></th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -62,18 +58,14 @@
 
             /* DataTable */
             $('.datatable').DataTable({
-                ajax: '{{ route('admin.scheduling.schedule.datatable') }}',
+                ajax: '{{ route('admin.master.notification.datatable') }}',
                 serverSide: true,
                 columns: [
                     { data: 'DT_RowIndex' },
-                    { data: 'course.name' },
-                    { data: 'lecture.user.first_name' },
-                    { data: 'room.name' },
-                    { data: 'classes.name' },
-                    { data: 'period' },
-                    { data: 'period_year' },
-                    { data: 'date_start_end'},
-                    { data: 'time_start_end'},
+                    { data: 'title', className: 'text-center' },
+                    { data: 'slug', className: 'text-center' },
+                    { data: 'created_at', className: 'text-center' },
+                    { data: 'updated_at', className: 'text-center' },
                     { data: 'action', className: 'text-nowrap', orderable: false }
                 ]
             });
