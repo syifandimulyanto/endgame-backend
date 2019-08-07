@@ -60,4 +60,9 @@ class User extends Authenticatable
         return $this->belongsToMany(static::$rolesModel, 'role_users', 'user_id', 'role_id')->withTimestamps();
     }
 
+    public function student()
+    {
+        return $this->belongsTo('App\Entities\Student', 'parent_id');
+    }
+
 }

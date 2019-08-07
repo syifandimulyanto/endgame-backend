@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\API;
 
+use App\Entities\Student;
 use App\Entities\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -107,17 +108,8 @@ class APIAuthController extends Controller
             if (!$token)
                 throw new Exception('Komunikasi dengan Auth Server gagal');
 
+            $user->student = Student::find($userModel->parent_id);
             $user->access_token = $token;
-            $user->roles;
-
-            // Unset un-needed field
-            foreach ($user->roles as &$role) {
-                unset($role->slug);
-                unset($role->permissions);
-                unset($role->created_at);
-                unset($role->updated_at);
-                unset($role->pivot);
-            }
 
             $response = [
                 'status' => 'success',
@@ -170,16 +162,7 @@ class APIAuthController extends Controller
 
         try {
             $user = Auth::guard('api')->user();
-            $user->roles;
-
-            foreach ($user->roles as &$role) {
-                unset($role->slug);
-                unset($role->permissions);
-                unset($role->created_at);
-                unset($role->updated_at);
-                unset($role->pivot);
-            }
-
+            $user->student = Student::find($user->parent_id);
             $response = [
                 'status' => 'success',
                 'code' => 200,
