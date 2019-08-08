@@ -103,7 +103,7 @@ class RoomController extends Controller
     */
     public function edit($id)
     {
-        $data = Room::find($id);
+        $data = $this->repository->find($id);
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 

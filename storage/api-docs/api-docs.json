@@ -89,6 +89,43 @@
                 }
             }
         },
+        "/slider": {
+            "get": {
+                "tags": [
+                    "slider"
+                ],
+                "summary": "Get all slider",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification data"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
         "/schedule": {
             "get": {
                 "tags": [

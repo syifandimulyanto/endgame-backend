@@ -36,5 +36,8 @@ Route::namespace('API')->group(function () {
 
         // notification
         Route::resource('notification', 'APINotificationController')->only(['index']);
+
+        // slider
+        Route::resource('slider', 'APISliderController')->only(['index']);
     });
 });

@@ -103,7 +103,7 @@ class ClassController extends Controller
      */
     public function edit($id)
     {
-        $data = Classes::find($id);
+        $data = $this->repository->find($id);
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 

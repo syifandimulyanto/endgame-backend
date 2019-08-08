@@ -49,6 +49,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
         Route::get('program-study/datatable', 'ProgramStudyController@datatable')->name('program-study.datatable');
         Route::get('course/datatable', 'CourseController@datatable')->name('course.datatable');
         Route::get('notification/datatable', 'NotificationController@datatable')->name('notification.datatable');
+        Route::get('slider/datatable', 'SliderController@datatable')->name('slider.datatable');
 
         // Master
         Route::resource('room', 'RoomController');
@@ -56,6 +57,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
         Route::resource('program-study', 'ProgramStudyController');
         Route::resource('course', 'CourseController');
         Route::resource('notification', 'NotificationController');
+        Route::resource('slider', 'SliderController');
 
     });
 

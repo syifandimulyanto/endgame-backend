@@ -1,75 +1,81 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Admin\Master;
 
-use App\Entities\Course;
-use App\Entities\ProgramStudy;
+use App\Entities\Slider;
 use App\Http\Controllers\Controller;
-use App\Repositories\CourseRepository;
-use App\Validators\CourseValidator;
+use App\Repositories\SliderRepository;
+use App\Validators\SliderValidator;
 use Illuminate\Http\Request;
 use DataTables;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class CourseController extends Controller 
+class SliderController extends Controller
 {
     /**
-     * @var RoomRepository
+     * @var SliderRepository
      */
     protected $repository;
 
     /**
-     * @var RoomValidator
+     * @var SliderValidator
      */
     protected $validator;
 
     /**
      * RoomController constructor.
      *
-     * @param CourseRepository $repository
-     * @param CourseValidator $validator
+     * @param SliderRepository $repository
+     * @param SliderValidator $validator
      */
-    public function __construct(CourseRepository $repository, CourseValidator $validator)
+    public function __construct(SliderRepository $repository, SliderValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
     /**
-    * Display a listing of the resource.
-    *
-    * @return Response
-    */
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
     public function index()
     {
-        return view('admin.master.course.index');
+        return view('admin.master.slider.index');
     }
 
     /**
-    * Show the form for creating a new resource.
-    *
-    * @return Response
-    */
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
     public function create()
     {
-
-        return view('admin.master.course.form')->with([
-            'programStudies' => ProgramStudy::all()
-        ]);
+        return view('admin.master.slider.form');
     }
 
     /**
-    * Store a newly created resource in storage.
-    *
-    * @return Response
-    */
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
     public function store(Request $request)
     {
         try {
+            $body = $request->except(['image']);
+            // Save Image if exists
+            if ($request->hasFile('image')) {
+                $uploadPath = 'uploads/' . date('Y/m');
+                $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
+                // Move file
+                $request->image->move(public_path($uploadPath), $imageName);
+                //$request->request->add(['image' => $uploadPath . '/' . $imageName]);
+                $body['image'] = $uploadPath . '/' . $imageName;
+            }
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $model = $this->repository->create($request->all());
+            $this->validator->with($body)->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $model = $this->repository->create($body);
 
             $response = [
                 'message' => 'Data created.',
@@ -79,7 +85,7 @@ class CourseController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.master.course.index')->with('message', $response['message']);
+            return redirect()->route('admin.master.slider.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -96,7 +102,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        return view('admin.master.course.show');
+        return view('admin.master.slider.show');
     }
 
     /**
@@ -111,10 +117,7 @@ class CourseController extends Controller
         if (!$data)
             return redirect()->back()->withErrors('Data not found');
 
-        return view('admin.master.course.form')->with([
-            'data' => $data,
-            'programStudies' => ProgramStudy::all()
-        ]);
+        return view('admin.master.slider.form')->with(['data' => $data]);
     }
 
     /**
@@ -126,7 +129,14 @@ class CourseController extends Controller
     public function update($id, Request $request)
     {
         try {
-
+            // Save Image if exists
+            if ($request->hasFile('image')) {
+                $uploadPath = 'uploads/' . date('Y/m');
+                $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
+                // Move file
+                $request->image->move(public_path($uploadPath), $imageName);
+                $request->request->add(['image' => $uploadPath . '/' . $imageName]);
+            }
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
             $model = $this->repository->update($request->all(), $id);
 
@@ -138,7 +148,7 @@ class CourseController extends Controller
             if ($request->wantsJson())
                 return response()->json($response);
 
-            return redirect()->route('admin.master.course.index')->with('message', $response['message']);
+            return redirect()->route('admin.master.slider.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson())
                 return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
@@ -165,21 +175,23 @@ class CourseController extends Controller
 
     public function datatable(Request $request)
     {
-        $models = Course::all();
+        $models = Slider::all();
         return DataTables::of($models)
             ->addIndexColumn()
+            ->editColumn('image', '@if ($image) <a href="{{ url($image) }}" data-popup="lightbox"><img src="{{ url($image) }}" style="height:40px; border-radius:3px"></a> @else No image. @endif')
             ->addColumn('action', function ($row) {
-                $formOpen   = '<form action="' . route('admin.master.course.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
+                $formOpen   = '<form action="' . route('admin.master.slider.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
 
-                $edit   = '<a href="' . route('admin.master.course.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
+                $edit   = '<a href="' . route('admin.master.slider.edit', $row->id) . '" class="btn border-warning text-primary-600 btn-icon btn-rounded btn-xs"><i class="icon-pencil"></i></a>';
                 $delete = '<a type="submit" class="btn border-warning text-danger-600 btn-icon btn-rounded btn-xs delete"><i class="icon-cancel-circle2"></i></a>';
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'image'])
             ->toJson();
     }
+
 }
 
 ?>
