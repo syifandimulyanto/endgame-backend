@@ -6,7 +6,7 @@
     ])
     <div class="content">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3">
+            <div class="col-md-8 col-md-offset-2">
                 @include('admin.layouts.partials.alert')
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -21,9 +21,9 @@
                     </div>
 
                     @if(@$data)
-                        {{ Form::open(['route' => ['admin.master.notification.update', $data->id], 'method' => 'PUT', 'class' => 'panel-body form-horizontal pb-20']) }}
+                        {{ Form::open(['route' => ['admin.master.notification.update', $data->id], 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'panel-body form-horizontal pb-20']) }}
                     @else
-                        {{ Form::open(['route' => 'admin.master.notification.store', 'class' => 'panel-body form-horizontal pb-20']) }}
+                        {{ Form::open(['route' => 'admin.master.notification.store', 'enctype' => 'multipart/form-data', 'class' => 'panel-body form-horizontal pb-20']) }}
                     @endif
 
                     <div class="form-group has-feedback {{ $errors->has('title') ? 'has-error' : '' }}">
@@ -45,6 +45,16 @@
                             <textarea name="description" class="form-control" rows="5" placeholder="Description .." style="resize:none">{{ @$data ? $data->description : old('description') }}</textarea>
                             @if ($errors->has('description'))
                                 <span class="help-block no-margin mt-5">{!! implode('<br>', $errors->get('description')) !!}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group has-feedback no-margin-bottom {{ $errors->has('image') ? 'has-error' : '' }}">
+                        <label class="control-label col-lg-4">Image <span class="text-danger">*</span></label>
+                        <div class="col-lg-8">
+                            <input type="file" class="file-input-preview" name="image" data-show-remove="true" accept="image/jpeg,image/x-png">
+                            @if ($errors->has('image'))
+                                <span class="help-block no-margin mt-5">{!! implode('<br>', $errors->get('image')) !!}</span>
                             @endif
                         </div>
                     </div>
@@ -73,6 +83,8 @@
 
 @section('script')
     <script type="text/javascript" src="{{ asset('assets/admin/js/plugins/editors/summernote/summernote.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/js/plugins/uploaders/fileinput/fileinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/js/plugins/uploaders/fileinput/default-setting.js') }}"></script>
     <script type="text/javascript">
         $(function(){
 
@@ -97,6 +109,25 @@
 
             /* Select2 */
             $('.select2').select2();
+
+            /* Images Input Handler */
+            $('.file-input-preview').fileinput({
+                showUpload: false,
+                browseLabel: 'Browse',
+                browseIcon: '<i class="icon-file-plus"></i>',
+                uploadIcon: '<i class="icon-file-upload2"></i>',
+                removeIcon: '<i class="icon-cross3"></i>',
+                layoutTemplates: {
+                    icon: '<i class="icon-file-check"></i>',
+                    modal: modalTemplate
+                },
+                initialPreviewAsData: true,
+                overwriteInitial: false,
+                // maxFileSize: 512,
+                previewZoomButtonClasses: previewZoomButtonClasses,
+                previewZoomButtonIcons: previewZoomButtonIcons,
+                fileActionSettings: fileActionSettings
+            });
         });
     </script>
 @endsection

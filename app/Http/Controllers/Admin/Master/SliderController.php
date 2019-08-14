@@ -129,16 +129,18 @@ class SliderController extends Controller
     public function update($id, Request $request)
     {
         try {
+            $body = $request->except(['image']);
             // Save Image if exists
             if ($request->hasFile('image')) {
                 $uploadPath = 'uploads/' . date('Y/m');
                 $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
                 // Move file
                 $request->image->move(public_path($uploadPath), $imageName);
-                $request->request->add(['image' => $uploadPath . '/' . $imageName]);
+                //$request->request->add(['image' => $uploadPath . '/' . $imageName]);
+                $body['image'] = $uploadPath . '/' . $imageName;
             }
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-            $model = $this->repository->update($request->all(), $id);
+            $this->validator->with($body)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $model = $this->repository->update($body, $id);
 
             $response = [
                 'message' => 'Data updated.',

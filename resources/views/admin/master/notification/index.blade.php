@@ -27,6 +27,7 @@
                                 <tr>
                                     <th width="5px">#</th>
                                     <th class="text-center">Title</th>
+                                    <th class="text-center">Image</th>
                                     <th class="text-center">Slug</th>
                                     <th class="text-center">Created at</th>
                                     <th class="text-center">Updated at</th>
@@ -63,6 +64,7 @@
                 columns: [
                     { data: 'DT_RowIndex' },
                     { data: 'title', className: 'text-center' },
+                    { data: 'image', className: 'text-center' },
                     { data: 'slug', className: 'text-center' },
                     { data: 'created_at', className: 'text-center' },
                     { data: 'updated_at', className: 'text-center' },

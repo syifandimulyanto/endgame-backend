@@ -65,14 +65,20 @@ class NotificationController extends Controller
     {
         try {
 
-            $request->request->add(
-                [
-                    'slug' => Str::slug($request->title),
-                    'type' => Notification::BLAST
-                ]
-            );
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $model = $this->repository->create($request->all());
+            $body = $request->except(['image']);
+            $body['slug'] = Str::slug($request->title);
+            $body['type'] = Notification::BLAST;
+            // Save Image if exists
+            if ($request->hasFile('image')) {
+                $uploadPath = 'uploads/' . date('Y/m');
+                $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
+                // Move file
+                $request->image->move(public_path($uploadPath), $imageName);
+                $body['image'] = $uploadPath . '/' . $imageName;
+            }
+
+            $this->validator->with($body)->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $model = $this->repository->create($body);
 
             $response = [
                 'message' => 'Data created.',
@@ -127,8 +133,18 @@ class NotificationController extends Controller
     {
         try {
 
-            $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-            $model = $this->repository->update($request->all(), $id);
+            $body = $request->except(['image']);
+            // Save Image if exists
+            if ($request->hasFile('image')) {
+                $uploadPath = 'uploads/' . date('Y/m');
+                $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
+                // Move file
+                $request->image->move(public_path($uploadPath), $imageName);
+                $body['image'] = $uploadPath . '/' . $imageName;
+            }
+
+            $this->validator->with($body)->passesOrFail(ValidatorInterface::RULE_UPDATE);
+            $model = $this->repository->update($body, $id);
 
             $response = [
                 'message' => 'Data updated.',
@@ -168,6 +184,7 @@ class NotificationController extends Controller
         $models = Notification::all();
         return DataTables::of($models)
             ->addIndexColumn()
+            ->editColumn('image', '@if ($image) <a href="{{ url($image) }}" data-popup="lightbox"><img src="{{ url($image) }}" style="height:40px; border-radius:3px"></a> @else No image. @endif')
             ->addColumn('action', function ($row) {
                 $formOpen   = '<form action="' . route('admin.master.notification.destroy', $row->id) . '" method="POST"><input type="hidden" name="_method" value="delete"><input type="hidden" name="_token" value="' . csrf_token() . '">';
                 $formClose  = '</form>';
@@ -177,7 +194,7 @@ class NotificationController extends Controller
 
                 return '<div class="text-center">' . $formOpen . $edit . $delete . $formClose . '</div>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'image'])
             ->toJson();
     }
 

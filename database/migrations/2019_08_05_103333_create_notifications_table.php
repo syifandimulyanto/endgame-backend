@@ -18,6 +18,7 @@ class CreateNotificationsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->string('type');
             $table->uuid('user_id')->nullable();
             $table->timestamps();
