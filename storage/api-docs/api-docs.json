@@ -212,43 +212,6 @@
                 }
             }
         },
-        "/profile": {
-            "get": {
-                "tags": [
-                    "Authenticate"
-                ],
-                "summary": "Get user profile",
-                "description": "-",
-                "consumes": [
-                    "application/x-www-form-urlencoded"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "User Access Token (eg: Bearer [user token])",
-                        "required": true,
-                        "type": "string",
-                        "format": "string",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "multi"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User profile"
-                    },
-                    "500": {
-                        "description": "Error Message"
-                    }
-                }
-            }
-        },
         "/attend": {
             "get": {
                 "tags": [
@@ -326,6 +289,191 @@
                 "responses": {
                     "200": {
                         "description": "Schedule data"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user profile",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User profile"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update profile user",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "formData",
+                        "description": "User birht date",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "birth_place",
+                        "in": "formData",
+                        "description": "User birth place",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "gender",
+                        "in": "formData",
+                        "description": "User Gender",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi",
+                        "enum": [
+                            "male",
+                            "female"
+                        ]
+                    },
+                    {
+                        "name": "religion",
+                        "in": "formData",
+                        "description": "User religion",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
+                    },
+                    "500": {
+                        "description": "Error Message"
+                    }
+                }
+            }
+        },
+        "/profile/password": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update password user",
+                "description": "-",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "User Access Token (eg: Bearer [user token])",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "User Password",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "confirm_password",
+                        "in": "formData",
+                        "description": "User confirm Password",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success message"
                     },
                     "500": {
                         "description": "Error Message"

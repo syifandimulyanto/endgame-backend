@@ -23,7 +23,8 @@ Route::namespace('API')->group(function () {
 
     Route::middleware('auth.api')->group(function (){
         // user data ..
-        Route::get('profile', 'APIAuthController@profile');
+        Route::post('profile/password', 'APIProfileController@changePassword');
+        Route::resource('profile', 'APIProfileController');
 
         // schedule
         Route::resource('schedule', 'APIScheduleController');
