@@ -85,4 +85,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function (){
         Route::resource('student', 'StudentController');
         Route::resource('change', 'ChangeController');
     });
+
+    Route::get('attend/datatable', 'Scheduling\AttendController@datatable')->name('attend.datatable');
+    Route::resource('attend', 'Scheduling\AttendController');
+    // Trainer
+    Route::resource('trainer', 'Trainer\TrainerController');
 });

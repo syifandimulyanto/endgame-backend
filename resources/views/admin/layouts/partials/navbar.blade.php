@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top bg-teal-600">
   <div class="navbar-header">
     <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-       <img src="{{ asset('assets/admin/images/logo_dark.png') }}">
+       <img style="height: 40px;" src="{{ asset('assets/admin/images/logo_dark.png') }}">
     </a>
 
     <ul class="nav navbar-nav visible-xs-block">

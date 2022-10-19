@@ -41,4 +41,9 @@ Route::namespace('API')->group(function () {
         // slider
         Route::resource('slider', 'APISliderController')->only(['index']);
     });
+
+    // Schedule Attend
+    Route::get('attend-with-nrp', 'APIScheduleAttendController@attend');
+
+    Route::post('attend-upload', 'APIScheduleAttendController@attendUpload');
 });

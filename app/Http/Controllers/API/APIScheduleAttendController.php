@@ -174,4 +174,76 @@ class APIScheduleAttendController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
         }
     }
+
+    public function attend(Request $request)
+    {
+        try {
+            $dateTime = Carbon::now();
+            $student = Student::with('user')->where('nrp', $request->nrp)->first();
+            if (!$student)
+                return response()->json('Student Not found', 404);
+
+            $day = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            $schedule = StudentSchedule::selectRaw('student_schedules.id as studentSchedule, schedules.*')
+                ->join('schedules', 'student_schedules.schedule_id', '=', 'schedules.id')
+                ->where('student_schedules.student_id', $student->id)
+                ->whereRaw('DATE(schedules.start_date) <= DATE(NOW())')
+                ->whereRaw('DATE(schedules.end_date) >= DATE(NOW())')
+                ->whereRaw('schedules.start_time <= "'. $dateTime->format('H:i:s') . '"')
+                ->whereRaw('schedules.end_time >= "'. $dateTime->format('H:i:s') . '"')
+                ->where('schedules.day', array_search(strtolower(date('l')), $day))
+                ->first();
+
+
+            if (!$schedule) return response()->json(['student' => $student], 401);
+                //return response()->json('Schedule Not found', 401);
+
+            $attend = [
+                'student_schedule_id' => $schedule->studentSchedule,
+                'date' => $dateTime->format('Y-m-d H:i:s')
+            ];
+
+            $checkAttend = Attendance::with(['studentSchedule.schedule.course'])->where('student_schedule_id', $schedule->studentSchedule)
+                ->whereRaw('DATE(attendances.date) = "' . $dateTime->format('Y-m-d') .'"')
+                ->first();
+
+            if ($checkAttend)
+                return response()->json(['student' => $student, 'attend' => $checkAttend], 402);
+
+            $this->validator->with($attend)->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $model = $this->repository->create($attend);
+
+
+            return response()->json([
+                'student' => $student,
+                'attend' => Attendance::with(['studentSchedule.schedule.course'])->find($model->id)
+            ]);
+
+        } catch (ValidatorException $e) {
+            return response()->json(['error' => true, 'message' => $e->getMessageBag()]);
+        }
+    }
+
+    public function attendUpload(Request $request)
+    {
+
+        $nrp = $request->nrp;
+        $attendId = $request->attend;
+
+        $response = [];
+        $response['nrp'] = $nrp;
+        $response['id'] = $attendId;
+
+        if ($request->hasFile('image')) {
+            $uploadPath = 'uploads/attend';
+            $imageName = $request->filename;
+//            $imageName  = time() . '.' . $request->image->getClientOriginalExtension();
+            // Move file
+            $request->image->move(public_path($uploadPath), $imageName);
+            //$request->request->add(['image' => $uploadPath . '/' . $imageName]);
+            $response['image'] = $uploadPath . '/' . $imageName;
+        }
+
+        return response()->json($response);
+    }
 }
